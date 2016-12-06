@@ -13,6 +13,9 @@ import com.example.liudan.customproject.fragment.FindFragment;
 import com.example.liudan.customproject.fragment.HomeFragment;
 import com.example.liudan.customproject.fragment.MineFragment;
 
+/**
+ * 主界面
+ */
 public class MainActivity extends BaseFragmentActivity implements View.OnClickListener {
     private ImageView tab1, tab2, tab3, tab4;
     private HomeFragment homefragment;

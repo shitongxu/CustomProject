@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "com.example.liudan.customproject"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        debug {}
+        release {
+            storeFile file("f:/customproject.keystore")
+            storePassword "customproject122"
+            keyAlias "customproject.keystore"
+            keyPassword "customproject122"
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            //签名
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            //签名
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为wine_v1.0_2015-01-15_wandoujia.apk
+                        def fileName = "custom_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+
+    productFlavors {
+        yingyongbao {}
+        wandoujia {}
+    }
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [CHANNEL_NAME: name]
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'com.lzy.net:okgo:+'
+    //版本号使用 + 可以自动引用最新版
+    compile 'com.lzy.net:okrx:+'
+    compile 'com.lzy.net:okserver:+'
+    //版本号使用 + 可以自动引用最新版
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile files('libs/universal-image-loader-1.9.4.jar')
+    compile 'com.android.support:design:24.2.1'
+}

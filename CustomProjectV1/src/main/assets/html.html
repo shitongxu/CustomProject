@@ -1,0 +1,28 @@
+<html>
+<h1>This is my Frist Title</h1>
+<h2>This is my Second Title</h2>
+<!--<body>
+<a href="http://www.baidu.com">This is a link</a>
+</body>
+<body>
+	<img src="http://pic.sogou.com/pics/recompic/detail.jsp?category=%E5%A3%81%E7%BA%B8&tag=%E5%85%A8%E9%83%A8#0%2611682709%2610" width="300" height="200" />
+</body>-->
+<body>
+	<input type="file" name="file" id="file" style="width :100px;height:30px" />
+<div id="imgBox"></div>
+</body>
+<script>
+	document.getElementById('file').onchange=function(){
+		var ele=document.getElementById('file').files[0];
+		var fr=new FileReader();
+		fr.onload=function(ev){
+			var pvImg=new Image();
+			pvImg.src=ev.target.result;
+			pvImg.style.width='320px';
+			pvImg.setAttribute('id','previewImg');
+			document.getElementById('imgBox').appendChild(pvImg);
+		}
+		fr.readAsDataURL(ele);
+	}
+</script>
+</html>
